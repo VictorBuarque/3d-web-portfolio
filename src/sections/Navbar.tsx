@@ -1,38 +1,74 @@
 import { Menu } from 'lucide-react'
-import { useState } from 'react'
+// Centralizando os imports do Sheet
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetDescription, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger 
+} from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false)
-    const toggleMenu = () => {
-        setIsOpen(!isOpen)
-    }
-    return (
-        <div className="fixed flex inset-x-0 z-20 w-full backdrop-blur-lg py-2 px-4 bg-primary/50 items-center justify-center border-b border-neutral-800">
-            <nav className="container max-w-7xl flex items-center justify-between min-h-10">
-                <a href="/" className="flex items-center gap-2">
-                    <p className="text-2xl font-bold text-neutral-400 transition-colors duration-300 hover:text-amber-300">Victor Buarque</p> {/* TODO: Add logo */}
-                </a>
-                <Menu className="w-6 h-6 lg:hidden cursor-pointer transition-colors duration-300 hover:text-amber-300" onClick={toggleMenu} />
-                {isOpen ? (
-                    <div className="relative flex flex-col">
-                    <div className="absolute top-10 right-0 w-full h-full bg-primary/50 backdrop-blur-lg border-b border-neutral-800">
-                        <a href="#home" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Home</a>
-                        <a href="#about" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">About</a>
-                        <a href="#services" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Services</a>
-                        <a href="#projects" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Projects</a>
-                        <a href="#contact" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Contact</a>
-                    </div>
-                    </div>
-                ) : (
-                    <div className="hidden lg:flex items-center justify-center gap-4">
-                        <a href="#home" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Home</a>
-                        <a href="#about" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">About</a>
-                        <a href="#services" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Services</a>
-                        <a href="#projects" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Projects</a>
-                        <a href="#contact" className="text-sm font-medium transition-colors duration-300 hover:text-amber-300">Contact</a>
-                    </div>
-                )} 
-            </nav>
+  const navLinks = [
+    { href: "#home", label: "Home" },
+    { href: "#about", label: "About" },
+    { href: "#services", label: "Services" },
+    { href: "#projects", label: "Projects" },
+    { href: "#contact", label: "Contact" },
+  ]
+
+  return (
+    <div className="fixed inset-x-0 top-0 z-50 w-full border-b border-neutral-800 bg-black/50 backdrop-blur-lg c-space">
+      <nav className="container mx-auto flex max-w-7xl items-center justify-between px-4 py-2 min-h-[60px]">
+        <a href="/" className="flex items-center gap-2">
+          <p className="text-2xl font-bold text-primary transition-colors duration-300 hover:text-secondary">
+            Victor Buarque
+          </p>
+        </a>
+
+        {/* Mobile Menu */}
+        <div className="lg:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="hover:text-secondary">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-neutral-950 border-neutral-800">
+              <SheetHeader className="text-left">
+                <SheetTitle className="text-primary">Menu</SheetTitle>
+                <SheetDescription className="text-secondary">Navegação do Portfólio</SheetDescription>
+              </SheetHeader>
+              <div className="mt-8 flex flex-col gap-4 px-6">
+                {navLinks.map((link) => (
+                  <a 
+                    key={link.href} 
+                    href={link.href} 
+                    className="text-lg font-medium text-primary hover:text-secondary transition-colors"
+                  >
+                    <p className="text-primary hover:text-secondary transition-colors">{link.label}</p>
+                  </a>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-    )
+
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a 
+              key={link.href} 
+              href={link.href} 
+              className="text-sm font-medium text-primary hover:text-secondary transition-colors"
+            >
+              <p className="text-primary hover:text-secondary transition-colors">{link.label}</p>
+            </a>
+          ))}
+        </div>
+      </nav>
+    </div>
+  )
 }
